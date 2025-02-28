@@ -9,7 +9,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 export const router = createBrowserRouter(
   [
     {
-      path: "/",
+      path: "/TMSim/",
       element: <Applayout />,
       children: [
         {
@@ -27,7 +27,4 @@ export const router = createBrowserRouter(
       element: <NoMatch />,
     },
   ],
-  {
-    basename: global.basename,
-  }
 );

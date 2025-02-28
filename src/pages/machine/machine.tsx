@@ -19,24 +19,24 @@ import {
     DrawerFooter,
     DrawerHeader,
     DrawerTitle,
-  } from "@/components/ui/drawer";
+  } from "../../components/ui/drawer";
   
   import { ReactFlow, Background, Controls } from "@xyflow/react";
   import "@xyflow/react/dist/style.css";
   import { ToolButton } from "./ToolButton";
-  import { Input } from "@/components/ui/input";
-  import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+  import { Input } from "../../components/ui/input";
+  import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area";
   import { useMemo } from "react";
-  import { useTheme } from "@/hooks/useTheme";
+  import { useTheme } from "../../hooks/useTheme";
   import { useMachine } from "./useMachine";
   import {
     edgeTypes,
     fitViewOptions,
     defaultEdgeOptions,
     nodeTypes,
-  } from "@/lib/constants";
-  import { Separator } from "@/components/ui/separator";
-  import { Button } from "@/components/ui/button";
+  } from "../../lib/constants";
+  import { Separator } from "../../components/ui/separator";
+  import { Button } from "../../components/ui/button";
   import { SaveDialog } from "./SaveDialog";
   import { EncodingDialog } from "./EncodingDialog";
   

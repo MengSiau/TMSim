@@ -6,4 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   base: "/TMSim/",
   plugins: [react(), tailwindcss()],
+  server: {
+    watch: {
+      usePolling: true
+    }
+  }
 })
