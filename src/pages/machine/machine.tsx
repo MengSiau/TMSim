@@ -269,6 +269,29 @@ import {
             <ScrollBar orientation="vertical" />
           </ScrollArea>
         </div>
+
+{/* horizontal version of tape
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-5/6 z-10">
+          <ScrollArea className="w-full h-20 border bg-background gap-2 px-3 rounded-lg">
+            <div className="flex items-center gap-1">
+              {machine.tape.map((_, idx) => (
+                <Input
+                  key={idx}
+                  className={`h-14 w-14 text-center text-3xl ${
+                    idx == machine.tapeHead && "border-primary border-2"
+                  }`}
+                  maxLength={1}
+                  value={machine.tape[idx]}
+                  onChange={(e) => machine.setTapeValue(e, idx)}
+                  onClick={machine.handleSymbolClick}
+                  onBlur={() => machine.setIsEditingTape(false)}
+                />
+              ))}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </div> */}
+
         <div className="absolute right-4 top-4 h-full z-10 w-20">
           <ScrollArea className="h-5/6 border bg-background gap-2 py-3 rounded-lg">
             <div className="flex flex-col items-center gap-1">
