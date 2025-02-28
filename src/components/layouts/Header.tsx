@@ -49,7 +49,7 @@ export function Header() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <a
-                  href="https://buymeacoffee.com/lachlanmacphee"
+                  href=""
                   target="_blank"
                   className={buttonVariants({ variant: "ghost", size: "icon" })}
                 >
