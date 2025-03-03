@@ -90,6 +90,18 @@ const DrawerTitle = React.forwardRef<
 ))
 DrawerTitle.displayName = DrawerPrimitive.Title.displayName
 
+const DrawerTitleRed = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DrawerPrimitive.Title
+    ref={ref}
+    className={cn("text-lg font-semibold leading-none tracking-tight text-red-500", className)}
+    {...props}
+  />
+))
+DrawerTitleRed.displayName = "DrawerTitleRed"
+
 const DrawerDescription = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
@@ -112,5 +124,6 @@ export {
   DrawerHeader,
   DrawerFooter,
   DrawerTitle,
+  DrawerTitleRed,
   DrawerDescription,
 }
