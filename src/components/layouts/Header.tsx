@@ -24,25 +24,7 @@ export function Header() {
           <span className="font-bold inline-block">{appConfig.name}</span>
         </a>
         <p className="text-center text-sm text-pretty leading-loose text-muted-foreground md:text-left">
-          Built by{" "}
-          <a
-            href={appConfig.author.url}
-            target="_blank"
-            rel="noreferrer"
-            className="font-medium underline underline-offset-4"
-          >
-            {appConfig.author.name}
-          </a>
-          . Source code is available on{" "}
-          <a
-            href={appConfig.github.url}
-            target="_blank"
-            rel="noreferrer"
-            className="font-medium underline underline-offset-4"
-          >
-            GitHub
-          </a>
-          .
+          text
         </p>
         <div className="flex gap-2 items-center">
           <TooltipProvider>

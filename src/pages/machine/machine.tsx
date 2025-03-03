@@ -56,28 +56,32 @@ import {
           onOpenChange={machine.setShowLoadMachinesDrawer}
         >
           <DrawerContent>
-            <div className="mx-auto w-full max-w-sm">
-              <DrawerHeader>
-                <DrawerTitle>Load Machine</DrawerTitle>
-                <DrawerDescription>
-                  Choose a machine to load into the canvas.
-                </DrawerDescription>
-              </DrawerHeader>
-              <div className="p-4 pb-0">
-                <div className="flex items-center justify-center space-x-2">
-                  {machine.machines.map((loadedMachine) => (
-                    <Button
-                      onClick={() => {
-                        machine.setNodes(loadedMachine.nodes);
-                        machine.setEdges(loadedMachine.edges);
-                        machine.setShowLoadMachinesDrawer(false);
-                      }}
-                    >
-                      {loadedMachine.id}
-                    </Button>
-                  ))}
-                </div>
+          <div className="mx-auto w-full max-w-7xl">
+          <DrawerHeader>
+            <DrawerTitle>Load Machine</DrawerTitle>
+            <DrawerDescription>
+              Choose a machine to load into the canvas.
+            </DrawerDescription>
+          </DrawerHeader>
+
+            {/* Full-width scrollable container with overflow*/}
+            <div className="w-full overflow-x-auto px-4 py-2">  
+              <div className="flex w-max items-center space-x-2"> 
+                {machine.machines.map((loadedMachine) => (
+                  <Button
+                    key={loadedMachine.id}
+                    onClick={() => {
+                      machine.setNodes(loadedMachine.nodes);
+                      machine.setEdges(loadedMachine.edges);
+                      machine.setShowLoadMachinesDrawer(false);
+                    }}
+                  >
+                    {loadedMachine.id}
+                  </Button>
+                ))}
               </div>
+            </div>
+
               <DrawerFooter>
                 <DrawerClose asChild>
                   <Button variant="outline">Cancel</Button>
