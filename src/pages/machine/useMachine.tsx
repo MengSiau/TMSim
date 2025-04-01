@@ -10,7 +10,9 @@ import {
     initDB,
     Machine,
     saveMachine,
+    deleteMachine,
     saveTape,
+    deleteTape,
     Stores,
     Tape,
   } from "../../lib/db";
@@ -48,6 +50,10 @@ import {
     const [showSaveMachineDialog, setShowSaveMachineDialog] =
       useState<boolean>(false);
     const [showLoadMachinesDrawer, setShowLoadMachinesDrawer] =
+      useState<boolean>(false);
+    const [showDeleteMachineDrawer, setShowDeleteMachineDrawer] =
+      useState<boolean>(false);
+    const [showDeleteTapeDrawer, setShowDeleteTapeDrawer] =
       useState<boolean>(false);
     const [tapes, setTapes] = useState<Tape[]>([]);
     const [showSaveTapeDialog, setShowSaveTapeDialog] = useState<boolean>(false);
@@ -304,14 +310,39 @@ import {
       const dbTapes = await getStoreData<Tape>(Stores.Tapes);
       setTapes(dbTapes);
       setShowLoadTapesDrawer(true);
+      console.log("loadTapes drawer opens");
     };
   
     const loadMachines = async () => {
-      const dbMachines = await getStoreData<Machine>(Stores.Machines);
-      setMachines(dbMachines);
+      const dbMachines = await getStoreData<Machine>(Stores.Machines); // Get machines from the database
+      setMachines(dbMachines); // Set the machines state to the machines from the database
       setShowLoadMachinesDrawer(true);
     };
-  
+
+    const deleteMachineShowDrawer = async () => {  
+      const dbMachines = await getStoreData<Machine>(Stores.Machines); 
+      setMachines(dbMachines);
+      setShowDeleteMachineDrawer(true);
+    }
+
+    const deleteMachineHandler = async (id: string) => {  
+      deleteMachine(id);
+      setShowDeleteMachineDrawer(false);
+    }
+
+    // Deleteing tapes - Get tapes and open drawer
+    const deleteTapeShowDrawer = async () => {
+      const dbTapes = await getStoreData<Tape>(Stores.Tapes);
+      setTapes(dbTapes);
+      setShowDeleteTapeDrawer(true);
+    }
+
+    // Calls delete tape func + close drawer
+    const deleteTapeHandler = async (id: string) => {
+      deleteTape(id);
+      setShowDeleteTapeDrawer(false);
+    }
+
     const changeSpeed = () => {
       if (speed == 20) {
         setSpeed(100);
@@ -355,12 +386,20 @@ import {
       machines,
       showLoadMachinesDrawer,
       setShowLoadMachinesDrawer,
+      showDeleteMachineDrawer,
+      setShowDeleteMachineDrawer,
+      deleteMachineShowDrawer,
+      deleteMachineHandler,
       loadTapes,
       saveMachineHandler,
       resetTape,
       tapes,
       saveTapeHandler,
       showLoadTapesDrawer,
+      showDeleteTapeDrawer,
+      deleteTapeHandler,
+      deleteTapeShowDrawer,
+      setShowDeleteTapeDrawer,
       setShowLoadTapesDrawer,
       showSaveMachineDialog,
       setShowSaveMachineDialog,

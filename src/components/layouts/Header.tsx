@@ -30,13 +30,8 @@ export function Header() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <a
-                  href=""
-                  target="_blank"
-                  className={buttonVariants({ variant: "ghost", size: "icon" })}
-                >
-                  <CoffeeIcon />
-                </a>
+   
+   
               </TooltipTrigger>
               <TooltipContent>
                 <p>Help support my work</p>

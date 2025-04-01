@@ -101,6 +101,7 @@ export const saveTape = async (id: string, contents: string[]) => {
   }
 };
 
+// Save machine to database
 export const saveMachine = async (id: string, nodes: Node[], edges: Edge[]) => {
   try {
     await addData(Stores.Machines, { id, nodes, edges });
@@ -109,6 +110,46 @@ export const saveMachine = async (id: string, nodes: Node[], edges: Edge[]) => {
       console.error(err.message);
     } else {
       console.error("Something went wrong");
+    }
+  }
+};
+
+// Delete machine from database
+export const deleteMachine = async (id: string) => {
+  try {
+    request = indexedDB.open(DB_NAME, version);
+
+    request.onsuccess = () => {
+      db = request.result;
+      const tx = db.transaction(Stores.Machines, "readwrite");
+      const store = tx.objectStore(Stores.Machines);
+      store.delete(id);
+    };
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error("Something went wrong with delete");
+    }
+  }
+};
+
+// Delete tape from database
+export const deleteTape = async (id: string) => {
+  try {
+    request = indexedDB.open(DB_NAME, version);
+
+    request.onsuccess = () => {
+      db = request.result;
+      const tx = db.transaction(Stores.Tapes, "readwrite");
+      const store = tx.objectStore(Stores.Tapes);
+      store.delete(id);
+    };
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error("Something went wrong with delete");
     }
   }
 };

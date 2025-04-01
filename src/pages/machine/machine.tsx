@@ -19,6 +19,7 @@ import {
     DrawerFooter,
     DrawerHeader,
     DrawerTitle,
+    DrawerTitleRed
   } from "../../components/ui/drawer";
   
   import { ReactFlow, Background, Controls } from "@xyflow/react";
@@ -90,6 +91,87 @@ import {
             </div>
           </DrawerContent>
         </Drawer>
+
+        {/* Delete Machines Drawer */}
+        <Drawer
+          open={machine.showDeleteMachineDrawer}
+          onOpenChange={machine.setShowDeleteMachineDrawer}
+        >
+          <DrawerContent>
+          <div className="mx-auto w-full max-w-7xl">
+          <DrawerHeader>
+            <DrawerTitleRed>Delete Machine</DrawerTitleRed>
+            <DrawerDescription>
+              Choose a machine to delete.
+            </DrawerDescription>
+          </DrawerHeader>
+
+            {/* Full-width scrollable container with overflow*/}
+            <div className="w-full overflow-x-auto px-4 py-2">  
+              <div className="flex w-max items-center space-x-2"> 
+                {machine.machines.map((loadedMachine) => (
+                  <Button
+                    key={loadedMachine.id}
+                    onClick={() => {
+                      machine.deleteMachineHandler(loadedMachine.id);
+                      machine.setShowDeleteMachineDrawer(false);
+                    }}
+                  >
+                    {loadedMachine.id}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+              <DrawerFooter>
+                <DrawerClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </div>
+          </DrawerContent>
+        </Drawer>
+
+        {/* Delete Tape Drawer */}
+        <Drawer
+          open={machine.showDeleteTapeDrawer}
+          onOpenChange={machine.setShowDeleteTapeDrawer}
+        >
+          <DrawerContent>
+          <div className="mx-auto w-full max-w-7xl">
+          <DrawerHeader>
+            <DrawerTitleRed>Delete Tape</DrawerTitleRed>
+            <DrawerDescription>
+              Choose a tape to delete.
+            </DrawerDescription>
+          </DrawerHeader>
+
+            {/* Full-width scrollable container with overflow*/}
+            <div className="w-full overflow-x-auto px-4 py-2">  
+              <div className="flex w-max items-center space-x-2"> 
+                {machine.tapes.map((loadedTape) => (
+                  <Button
+                    key={loadedTape.id}
+                    onClick={() => {
+                      machine.deleteTapeHandler(loadedTape.id);
+                      machine.setShowDeleteMachineDrawer(false);
+                    }}
+                  >
+                    {loadedTape.id}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+              <DrawerFooter>
+                <DrawerClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </div>
+          </DrawerContent>
+        </Drawer>
+
         {/* Load Tapes Drawer */}
         <Drawer
           open={machine.showLoadTapesDrawer}
@@ -220,6 +302,17 @@ import {
               >
                 <SaveIcon />
               </ToolButton>
+
+              <ToolButton
+                name="deleteTape"
+                tooltip="Delete Tape"
+                onClick={machine.deleteTapeShowDrawer}
+                activeTool={machine.activeTool}
+                setActiveTool={machine.setActiveTool}
+              >
+                <TrashIcon />
+              </ToolButton>
+
               <ToolButton
                 name="loadTape"
                 tooltip="Load Tape"
@@ -249,6 +342,17 @@ import {
               >
                 <HardDriveUploadIcon />
               </ToolButton>
+
+              <ToolButton
+                name="deleteMachine"
+                tooltip="Delete Machine"
+                onClick={machine.deleteMachineShowDrawer}
+                activeTool={machine.activeTool}
+                setActiveTool={machine.setActiveTool}
+              >
+                <TrashIcon />
+              </ToolButton>
+
               <Separator className="w-14 mt-2" />
               <span className="font-extralight text-sm">MISC</span>
               <ToolButton
