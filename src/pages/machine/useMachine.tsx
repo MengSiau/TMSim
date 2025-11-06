@@ -4,7 +4,6 @@ import {
     ChangeEvent,
     MouseEventHandler,
     useEffect,
-    act,
   } from "react";
   import {
     getStoreData,
@@ -29,6 +28,7 @@ import {
     MarkerType,
     addEdge,
     useReactFlow,
+    Connection,
   } from "@xyflow/react";
   import "@xyflow/react/dist/style.css";
   import { initialEdges, initialNodes } from "../../lib/constants";
@@ -106,10 +106,10 @@ import {
     );
 
     // Allows for click a node, then another to create an edge between them rather than drag
-    const genRanNumber 
-    = (min: number, max: number) => {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
+    // const genRanNumber 
+    // = (min: number, max: number) => {
+    //   return Math.floor(Math.random() * (max - min + 1)) + min;
+    // };
     const [connectingFrom, setConnectingFrom] = useState<string | null>(null);
     const nodeClickHandlerForEdge = useCallback(
       (event: React.MouseEvent, clickedNode: Node) => {
