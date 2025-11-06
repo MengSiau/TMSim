@@ -73,12 +73,26 @@ export function TuringEdge({
   const [edgeValue, setEdgeValue] = useState(data!.edgeValue as string);
   const { setEdges } = useReactFlow();
 
+  // Check for bidirectional edges (existing logic)
   const isBiDirectionEdge = useStore((s: ReactFlowState) =>
     s.edges.some(
       (e) =>
         (e.source === target && e.target === source) ||
         (e.target === source && e.source === target)
     )
+  );
+
+  //  EXPERIMENTAL TEST
+  // Check for multiple edges in the same direction so we can make them distinct (separate via curvature)
+  const edgeIndex = useStore((s: ReactFlowState) => {
+    const sameDirectionEdges = s.edges.filter(
+      (e) => e.source === source && e.target === target
+    );
+    return sameDirectionEdges.findIndex((e) => e.id === id);
+  });
+
+  const totalSameDirectionEdges = useStore((s: ReactFlowState) =>
+    s.edges.filter((e) => e.source === source && e.target === target).length
   );
 
   const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(
@@ -95,8 +109,13 @@ export function TuringEdge({
     targetPosition: targetPos,
   };
 
-  const offset = sourceX < targetX ? 50 : -50;
-  const bidirectionalPath = getSpecialPath(edgePathParams, offset);
+  //  MODIFIED: Calculate offset based on edge index and total edges
+  const baseOffset = sourceX < targetX ? 50 : -50;
+  const multiEdgeOffset = totalSameDirectionEdges > 1 
+    ? baseOffset + (edgeIndex * 40) // 40px spacing between parallel edges
+    : baseOffset;
+
+  const bidirectionalPath = getSpecialPath(edgePathParams, multiEdgeOffset);
 
   const [bezierEdgePath, labelX, labelY] = getBezierPath({
     sourceX: sx,
@@ -105,6 +124,8 @@ export function TuringEdge({
     targetPosition: targetPos,
     targetX: tx,
     targetY: ty,
+    //  NEW: Add curvature offset for multiple edges
+    curvature: totalSameDirectionEdges > 1 ? 0.25 + (edgeIndex * 0.15) : 0.25,
   });
 
   const onChangeHandler = (value: string) => {
@@ -126,12 +147,15 @@ export function TuringEdge({
   const selfConnectingEdgePath = `M ${
     sourceX - 5
   } ${sourceY} A ${radiusX} ${radiusY} 0 1 0 ${targetX + 2} ${targetY}`;
+  
   const bezierTransform = `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`;
   const selfConnectingTransform = `translate(-50%, -300%) translate(${
     (targetX + sourceX) / 2
   }px, ${sourceY}px)`;
+  
+  //  MODIFIED: Adjust label position for multiple edges
   const bidirectionTransform = `translate(-50%, -50%) translate(${labelX}px, ${
-    labelY + offset / 2
+    labelY + multiEdgeOffset / 2
   }px)`;
 
   return (

@@ -4,6 +4,7 @@ import {
     ChangeEvent,
     MouseEventHandler,
     useEffect,
+    act,
   } from "react";
   import {
     getStoreData,
@@ -65,6 +66,86 @@ import {
     const handleInitDB = async () => {
       await initDB();
     };
+
+
+    // TEST - Experimental edge adder 
+    // Allow adding edge via clicks rather than drag 
+    // TEST START // 
+    const onEdgeUpdate = useCallback(
+      (oldEdge: Edge, newConnection: Connection) => {
+        setEdges((els) => {
+          // Remove the old edge
+          const withoutOld = els.filter((edge) => edge.id !== oldEdge.id);
+          
+          // Add the new edge with updated connection
+          return [
+            ...withoutOld,
+            {
+              ...oldEdge,
+              id: `${newConnection.source}-${newConnection.target}-${Date.now()}`,
+              source: newConnection.source!,
+              target: newConnection.target!,
+              sourceHandle: newConnection.sourceHandle,
+              targetHandle: newConnection.targetHandle,
+            },
+          ];
+        });
+      },
+      [setEdges]
+    );
+    
+    const onEdgeUpdateStart = useCallback(() => {
+      console.log("Edge update started");
+    }, []);
+    
+    const onEdgeUpdateEnd = useCallback(
+      (_: any, edge: Edge) => {
+        console.log("Edge update ended", edge);
+      },
+      []
+    );
+
+    // Allows for click a node, then another to create an edge between them rather than drag
+    const genRanNumber 
+    = (min: number, max: number) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+    const [connectingFrom, setConnectingFrom] = useState<string | null>(null);
+    const nodeClickHandlerForEdge = useCallback(
+      (event: React.MouseEvent, clickedNode: Node) => {
+        if (activeTool === "addEdge") {
+          event.stopPropagation();
+          
+          if (!connectingFrom) {
+            setConnectingFrom(clickedNode.id);
+          } else {
+            if (connectingFrom !== clickedNode.id) {
+              
+              setEdges((eds) => [
+                ...eds,
+                {
+                  id: `${connectingFrom}-${clickedNode.id}-${Date.now()}`, // Unique ID
+                  source: connectingFrom,
+                  target: clickedNode.id,
+                  type: "turing",
+                  data: { edgeValue: "_,_,>" },
+                  markerEnd: {
+                    type: MarkerType.ArrowClosed,
+                    width: 20,
+                    height: 20,
+                  },
+                },
+              ]);
+            }
+            setConnectingFrom(null);
+          }
+          return;
+        }
+      },
+      [activeTool, connectingFrom, setEdges]
+    );
+
+    // TEST END // 
   
     const handleKeyPress = useCallback(
       (event: KeyboardEvent) => {
@@ -72,15 +153,19 @@ import {
         switch (event.key) {
           case "a":
             setActiveTool("select");
+            console.log("select tool selected: " + activeTool);
             break;
           case "s":
             setActiveTool("addMoveNode");
+            console.log("add move node tool selected: " + activeTool);
             break;
           case "d":
             setActiveTool("addEdge");
+            console.log("add edge tool selected.: " + activeTool);
             break;
           case "f":
             setActiveTool("delete");
+            console.log("delete tool selected: " + activeTool);
             break;
           default:
             break;
@@ -107,25 +192,35 @@ import {
       [setEdges]
     );
   
+    // TEST-Experiment with click to add edge
+    // Custom onConnect to add Turing edge with specific data
     const onConnect: OnConnect = useCallback(
-      (params) =>
-        setEdges((eds) =>
-          addEdge(
-            {
-              ...params,
-              type: "turing",
-              // @ts-ignore
-              data: { ...params.data, edgeValue: "_,_,>" },
-              markerEnd: {
-                type: MarkerType.ArrowClosed,
-                width: 20,
-                height: 20,
+      (params) => {
+        console.log("onConnect called with params:", params); // Debug log
+        console.log("addEdge tool active:", addEdge); // Debug log for tool state
+    
+        if (addEdge) {
+          setEdges((eds) =>
+            addEdge(
+              {
+                ...params,
+                type: "turing",
+                // @ts-ignore
+                data: { ...params.data, edgeValue: "_,_,>" },
+                markerEnd: {
+                  type: MarkerType.ArrowClosed,
+                  width: 20,
+                  height: 20,
+                },
               },
-            },
-            eds
-          )
-        ),
-      [setEdges]
+              eds
+            )
+          );
+        } else {
+          console.log("addEdge tool is not active.");
+        }
+      },
+      [setEdges, addEdge]
     );
   
     const clickHandler: MouseEventHandler<HTMLDivElement> = useCallback(
@@ -155,7 +250,14 @@ import {
     );
   
     const nodeClickHandler = useCallback(
-      (_: any, clickedNode: any) => {
+      (event: any, clickedNode: any) => {
+        // Handle addEdge tool separately
+        if (activeTool === "addEdge") {
+          nodeClickHandlerForEdge(event, clickedNode);
+          return;
+        }
+    
+        // Original delete logic
         switch (activeTool) {
           case "delete":
             setNodes(nodes.filter((node) => node.id != clickedNode.id));
@@ -165,12 +267,12 @@ import {
                 .filter((edge) => edge.target != clickedNode.id)
             );
             break;
-  
+    
           default:
             break;
         }
       },
-      [activeTool, nodes, edges]
+      [activeTool, nodes, edges, nodeClickHandlerForEdge]
     );
   
     const edgeClickHandler = useCallback(
@@ -418,5 +520,12 @@ import {
       showEncodingDialog,
       setShowEncodingDialog,
       createEncoding,
+      // For experimental edge adder
+      connectingFrom,
+      setConnectingFrom,
+      // Experimental edge adder callbacks
+      onEdgeUpdate,
+      onEdgeUpdateStart,
+      onEdgeUpdateEnd,
     };
   };

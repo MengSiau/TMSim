@@ -30,23 +30,22 @@ import {
             : data.isStart
             ? "bg-primary"
             : "bg-secondary"
-        } ${data.isActive ? "drop-shadow-glow" : ""} ${
-          isPotentialForDeletion ? "opacity-50" : ""
+        } ${data.isActive ? "drop-shadow-glow" : ""} ${isPotentialForDeletion ? "opacity-50" : ""
         }`}
       >
         {!connection.inProgress && (
           <Handle
-            className={`w-16 h-16 ${
-              !isAddEdgeTool && "-z-10"
-            } absolute top-0 left-0 rounded-none transform-none border-none opacity-0`}
-            position={Position.Right}
-            type="source"
-          />
+          className={`w-16 h-16 ${
+            isAddEdgeTool ? "z-50 opacity-100" : "-z-10 opacity-0"  // ← Change opacity and z-index
+          } absolute top-0 left-0 rounded-none transform-none border-none bg-transparent cursor-crosshair`}
+          position={Position.Right}
+          type="source"
+        />
         )}
         <Handle
           className={`w-16 h-16 ${
             !isAddEdgeTool && "-z-10"
-          } absolute top-0 left-0 rounded-none transform-none border-none opacity-0`}
+          } absolute top-0 left-0 rounded-none transform-none border-none opacity-50`}
           position={Position.Left}
           type="target"
           isConnectableStart={false}
