@@ -34,7 +34,7 @@ export function Header() {
    
               </TooltipTrigger>
               <TooltipContent>
-                <p>Help support my work</p>
+                <p>Placeholder</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
