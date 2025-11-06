@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { appConfig } from "../../config/app";
 import { ModeToggle } from "../mode-toggle";
-import { CassetteTapeIcon, CoffeeIcon, SettingsIcon } from "lucide-react";
-import { Button, buttonVariants } from "../ui/button";
+import { CassetteTapeIcon, SettingsIcon } from "lucide-react";
+import { Button } from "../ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -24,7 +24,7 @@ export function Header() {
           <span className="font-bold inline-block">{appConfig.name}</span>
         </a>
         <p className="text-center text-sm text-pretty leading-loose text-muted-foreground md:text-left">
-          text
+          Turing Machine Simulator
         </p>
         <div className="flex gap-2 items-center">
           <TooltipProvider>

@@ -429,6 +429,7 @@ import {
                 isActive: machine.activeNodeId == node.id,
                 activeTool: machine.activeTool,
                 isHovered: machine.hoveredNodeId == node.id,
+                connectingFrom: machine.connectingFrom,
               },
             }))}
             nodeTypes={nodeTypes}
@@ -445,8 +446,10 @@ import {
             onNodeClick={machine.nodeClickHandler}
             onNodeMouseEnter={machine.nodeMouseEnterHandler}
             onNodeMouseLeave={machine.nodeMouseLeaveHandler}
+
             onEdgeClick={machine.edgeClickHandler}
-            nodesConnectable={machine.activeTool == "addEdge"}
+            // nodesConnectable={machine.activeTool == "addEdge"}
+            nodesConnectable={false}
           >
             <Background />
             <Controls position="bottom-center" orientation="horizontal" />
